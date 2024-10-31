@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./App.css"; // Pastikan untuk mengimpor file CSS
 
 function App() {
   const [queue, setQueue] = useState([]);
