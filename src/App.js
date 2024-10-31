@@ -41,7 +41,7 @@ function App() {
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const response = await fetch('https://api.allorigins.win/raw?url=http://47.128.237.174/mandalorian/lockfile.php?cek=yes');
+        const response = await fetch('https://due-ibby-individual-65-cb3662a6.koyeb.app/lockfile.php?cek=yes');
         const data = await response.text();
         //  console.log("response :", data);
         setLockStatus(data === '1');
