@@ -3,13 +3,7 @@ import React, { useState, useEffect } from "react";
 function App() {
   const [queue, setQueue] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [selectedUrlOption, setSelectedUrlOption] = useState(1); // Default ke "SATU"
-
-  const urlOptions = {
-    1: "http://47.128.237.174/mandalorian/luciurl.php",
-    2: "http://47.128.237.174/mandalorian/luciurl2.php",
-    3: "http://47.128.237.174/mandalorian/luciurl3.php",
-  };
+  const [selectedUrl, setSelectedUrl] = useState("luciurl.php");
 
   const handleButtonClick = async (buttonId) => {
     if (queue.includes(buttonId)) {
@@ -24,75 +18,72 @@ function App() {
       const data = await response.text();
       const isLocked = data === "1";
 
-    if (!isLocked) {
-      const selectedUrl = urlOptions[selectedUrlOption]; // Pastikan selectedUrlOption valid
-      const url = `${selectedUrl}?urutan=${buttonId}`;
-      console.log(`Membuka website dengan URL lengkap: ${url}`); // Tambahkan log untuk debugging
-      window.open(url, "_blank");
-    }
-  } catch (error) {
-    console.error("Error fetching lock status:", error);
-    setQueue((prevQueue) => [...prevQueue, buttonId]);
-  }
-};
-
-const processQueue = async () => {
-  if (queue.length === 0) return;
-
-  setIsProcessing(true);
-
-  try {
-    const currentButtonId = queue[0];
-
-    const response = await fetch(
-      "https://due-ibby-individual-65-cb3662a6.koyeb.app/lockfile.php?cek=yes"
-    );
-    const data = await response.text();
-    const isLocked = data === "1";
-
-    if (!isLocked) {
-      const selectedUrl = urlOptions[selectedUrlOption];
-      const url = `<span class="math-inline">\{selectedUrl\}?urutan\=</span>{currentButtonId}`;
-      console.log(`Membuka website untuk tombol ${currentButtonId}`);
-
-      const hiddenElement = document.createElement("span");
-      document.body.appendChild(hiddenElement);
-      hiddenElement.addEventListener("click", () => {
+      if (isLocked) {
+        setQueue((prevQueue) => [...prevQueue, buttonId]);
+      } else {
+        const url = `http://47.128.237.174/mandalorian/${selectedUrl}?urutan=${buttonId}`;
+        console.log(`Membuka website untuk tombol ${buttonId}`);
         window.open(url, "_blank");
-      });
-      hiddenElement.click();
-      document.body.removeChild(hiddenElement);
-
-      setQueue((prevQueue) => prevQueue.slice(1));
+      }
+    } catch (error) {
+      console.error("Error fetching lock status:", error);
+      setQueue((prevQueue) => [...prevQueue, buttonId]);
     }
-  } catch (error) {
-    console.error("Error fetching lock status:", error);
-  } finally {
-    setIsProcessing(false);
-  }
-};
+  };
 
-useEffect(() => {
-  let timeoutId;
+  const processQueue = async () => {
+    if (queue.length === 0) return;
 
-  if (!isProcessing && queue.length > 0) {
-    timeoutId = setTimeout(() => {
-      processQueue();
-    }, 5000);
-  }
+    setIsProcessing(true);
 
-  return () => clearTimeout(timeoutId);
-}, [queue, isProcessing]);
+    try {
+      const currentButtonId = queue[0];
+
+      const response = await fetch(
+        "https://due-ibby-individual-65-cb3662a6.koyeb.app/lockfile.php?cek=yes"
+      );
+      const data = await response.text();
+      const isLocked = data === "1";
+
+      if (!isLocked) {
+        const url = `http://47.128.237.174/mandalorian/${selectedUrl}?urutan=${currentButtonId}`;
+        console.log(`Membuka website untuk tombol ${currentButtonId}`);
+
+        const hiddenElement = document.createElement("span");
+        document.body.appendChild(hiddenElement);
+        hiddenElement.addEventListener("click", () => {
+          window.open(url, "_blank");
+        });
+        hiddenElement.click();
+        document.body.removeChild(hiddenElement);
+
+        setQueue((prevQueue) => prevQueue.slice(1));
+      }
+    } catch (error) {
+      console.error("Error fetching lock status:", error);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  useEffect(() => {
+    let timeoutId;
+
+    if (!isProcessing && queue.length > 0) {
+      timeoutId = setTimeout(() => {
+        processQueue();
+      }, 5000);
+    }
+
+    return () => clearTimeout(timeoutId);
+  }, [queue, isProcessing]);
 
   return (
     <div>
-      <select
-        value={selectedUrlOption}
-        onChange={(event) => setSelectedUrlOption(parseInt(event.target.value))}
-      >
-        <option value="1">SATU (luciurl.php)</option>
-        <option value="2">DUA (luciurl2.php)</option>
-        <option value="3">TIGA (luciurl3.php)</option>
+      <select onChange={(e) => setSelectedUrl(e.target.value)} value={selectedUrl}>
+        <option value="luciurl.php">luciurl.php</option>
+        <option value="luciurl2.php">luciurl2.php</option>
+        <option value="luciurl3.php">luciurl3.php</option>
       </select>
       {[...Array(8)].map((_, index) => (
         <button key={index} onClick={() => handleButtonClick(index + 1)}>
