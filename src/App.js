@@ -1,57 +1,81 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function App() {
   const [queue, setQueue] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [lockStatus, setLockStatus] = useState(true); // Awalnya terkunci
 
-  const handleButtonClick = (buttonId) => {
-    setQueue([...queue, buttonId]);
-    processQueue();
-  };
+  const handleButtonClick = async (buttonId) => {
+    if (queue.includes(buttonId)) {
+      console.log(`Tombol ${buttonId} sudah ada dalam antrian`);
+      return;
+    }
 
-  const processQueue = async () => {
-    if (isProcessing) return;
+    try {
+      const response = await fetch(
+        "https://due-ibby-individual-65-cb3662a6.koyeb.app/lockfile.php?cek=yes"
+      );
+      const data = await response.text();
+      const isLocked = data === "1";
 
-    setIsProcessing(true);
-    const currentButtonId = queue[0];
-
-    if (!lockStatus) {
-      // Simulasi membuka website di tab baru
-      console.log(`Membuka website untuk tombol ${currentButtonId}`);
-      window.open('https://example.com', '_blank');
-
-      setQueue(queue.slice(1));
-      // Simulasi website selesai diproses setelah 3 detik
-      setTimeout(() => {
-        setLockStatus(true);
-        setIsProcessing(false);
-        processQueue();
-      }, 3000);
-    } else {
-      // Simulasi cek lockStatus setiap 1 detik
-      setTimeout(() => {
-        setIsProcessing(false);
-        processQueue();
-      }, 1000);
+      if (isLocked) {
+        setQueue((prevQueue) => [...prevQueue, buttonId]);
+      } else {
+        const url = `http://47.128.237.174/mandalorian/luciurl3.php?urutan-${buttonId}`;
+        console.log(`Membuka website untuk tombol ${buttonId}`);
+        window.open(url, "_blank");
+      }
+    } catch (error) {
+      console.error("Error fetching lock status:", error);
+      setQueue((prevQueue) => [...prevQueue, buttonId]);
     }
   };
 
-  // Simulasi update lockStatus dari server setiap 5 detik
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        const response = await fetch('https://due-ibby-individual-65-cb3662a6.koyeb.app/lockfile.php?cek=yes');
-        const data = await response.text();
-        //  console.log("response :", data);
-        setLockStatus(data === '1');
-      } catch (error) {
-        console.error('Error fetching lock status:', error);
-        // Tangani error, misalnya dengan menampilkan pesan error atau retry
+  const processQueue = async () => {
+    if (queue.length === 0) return;
+
+    setIsProcessing(true);
+
+    try {
+      const currentButtonId = queue[0];
+
+      const response = await fetch(
+        "https://due-ibby-individual-65-cb3662a6.koyeb.app/lockfile.php?cek=yes"
+      );
+      const data = await response.text();
+      const isLocked = data === "1";
+
+      if (!isLocked) {
+        const url = `http://47.128.237.174/mandalorian/luciurl3.php?urutan=${currentButtonId}`;
+        console.log(`Membuka website untuk tombol ${currentButtonId}`);
+
+        const hiddenElement = document.createElement("span");
+        document.body.appendChild(hiddenElement);
+        hiddenElement.addEventListener("click", () => {
+          window.open(url, "_blank");
+        });
+        hiddenElement.click();
+        document.body.removeChild(hiddenElement);
+
+        setQueue((prevQueue) => prevQueue.slice(1));
       }
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    } catch (error) {
+      console.error("Error fetching lock status:", error);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  useEffect(() => {
+    let timeoutId;
+
+    if (!isProcessing && queue.length > 0) {
+      timeoutId = setTimeout(() => {
+        processQueue();
+      }, 5000);
+    }
+
+    return () => clearTimeout(timeoutId);
+  }, [queue, isProcessing]);
 
   return (
     <div>
@@ -60,8 +84,7 @@ function App() {
           Tombol {index + 1}
         </button>
       ))}
-      <p>Antrian: {queue.join(', ')}</p>
-      <p>Status Lock: {lockStatus ? 'Terkunci' : 'Terbuka'}</p>
+      <p>Antrian: {queue.join(", ")}</p>
     </div>
   );
 }
