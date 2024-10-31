@@ -3,6 +3,13 @@ import React, { useState, useEffect } from "react";
 function App() {
   const [queue, setQueue] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [selectedUrlOption, setSelectedUrlOption] = useState(1); // Default to "SATU"
+
+  const urlOptions = {
+    1: "http://47.128.237.174/mandalorian/luciurl.php",
+    2: "http://47.128.237.174/mandalorian/luciurl2.php",
+    3: "http://47.128.237.174/mandalorian/luciurl3.php",
+  };
 
   const handleButtonClick = async (buttonId) => {
     if (queue.includes(buttonId)) {
@@ -20,8 +27,9 @@ function App() {
       if (isLocked) {
         setQueue((prevQueue) => [...prevQueue, buttonId]);
       } else {
-        const url = `http://47.128.237.174/mandalorian/luciurl3.php?urutan=${buttonId}`;
+        const selectedUrl = urlOptions[selectedUrlOption]; // Use selectedUrlOption
         console.log(`Membuka website untuk tombol ${buttonId}`);
+        const url = `<span class="math-inline">\{selectedUrl\}?urutan\=</span>{buttonId}`;
         window.open(url, "_blank");
       }
     } catch (error) {
@@ -45,7 +53,8 @@ function App() {
       const isLocked = data === "1";
 
       if (!isLocked) {
-        const url = `http://47.128.237.174/mandalorian/luciurl3.php?urutan=${currentButtonId}`;
+        const selectedUrl = urlOptions[selectedUrlOption];
+        const url = `<span class="math-inline">\{selectedUrl\}?urutan\=</span>{currentButtonId}`;
         console.log(`Membuka website untuk tombol ${currentButtonId}`);
 
         const hiddenElement = document.createElement("span");
@@ -79,6 +88,14 @@ function App() {
 
   return (
     <div>
+      <select
+        value={selectedUrlOption}
+        onChange={(event) => setSelectedUrlOption(parseInt(event.target.value))}
+      >
+        <option value="1">SATU (luciurl.php)</option>
+        <option value="2">DUA (luciurl2.php)</option>
+        <option value="3">TIGA (luciurl3.php)</option>
+      </select>
       {[...Array(8)].map((_, index) => (
         <button key={index} onClick={() => handleButtonClick(index + 1)}>
           Tombol {index + 1}
@@ -89,4 +106,4 @@ function App() {
   );
 }
 
-export default App;
+export
