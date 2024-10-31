@@ -20,7 +20,7 @@ function App() {
       if (isLocked) {
         setQueue((prevQueue) => [...prevQueue, buttonId]);
       } else {
-        const url = `http://47.128.237.174/mandalorian/luciurl3.php?urutan-${buttonId}`;
+        const url = `http://47.128.237.174/mandalorian/luciurl3.php?urutan=${buttonId}`;
         console.log(`Membuka website untuk tombol ${buttonId}`);
         window.open(url, "_blank");
       }
