@@ -39,9 +39,16 @@ function App() {
 
   // Simulasi update lockStatus dari server setiap 5 detik
   useEffect(() => {
-    const interval = setInterval(() => {
-      // Ganti dengan logika fetch/XHR untuk mendapatkan lockStatus dari server
-      setLockStatus(Math.random() < 0.5); // Simulasi random lockStatus
+    const interval = setInterval(async () => {
+      try {
+        const response = await fetch('http://47.128.237.174/mandalorian/lockfile.php?cek=yes');
+        const data = await response.text();
+        //  console.log("response :", data);
+        setLockStatus(data === '1');
+      } catch (error) {
+        console.error('Error fetching lock status:', error);
+        // Tangani error, misalnya dengan menampilkan pesan error atau retry
+      }
     }, 5000);
     return () => clearInterval(interval);
   }, []);
