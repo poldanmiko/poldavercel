@@ -135,29 +135,30 @@ function App() {
       ))}
       <p>Antrian: {queue.join(", ")}</p>
 
-      <form onSubmit={handleFormSubmit}>
-        <select onChange={(e) => setNomor(e.target.value)} value={nomor}>
-          <option value="1">Nomor 1</option>
-          <option value="2">Nomor 2</option>
-          <option value="3">Nomor 3</option>
+      <form onSubmit={handleFormSubmit} className="form">
+        <select onChange={(e) => setNomor(e.target.value)} value={nomor} className="form-select">
+          <option value="1">Pasukan 1</option>
+          <option value="2">Pasukan 2</option>
+          <option value="3">Pasukan 3</option>
         </select>
-        <select onChange={(e) => setOpsi(e.target.value)} value={opsi}>
+        <select onChange={(e) => setOpsi(e.target.value)} value={opsi} className="form-select">
           {[...Array(8)].map((_, index) => (
             <option key={index} value={index + 1}>
-              Opsi {index + 1}
+              {index + 1}
             </option>
           ))}
         </select>
         <input
           type="email"
-          placeholder="Alamat Email"
+          placeholder="Tambah Email?"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          className="form-input"
         />
-        <button type="submit">Submit</button>
+        <button type="submit" className="form-button">Gas</button>
       </form>
-      {notification && <p>{notification}</p>}
+      {notification && <p className="notification">{notification}</p>}
     </div>
   );
 }
