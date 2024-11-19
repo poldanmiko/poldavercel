@@ -25,7 +25,7 @@ function App() {
       } else {
         const urlParams = new URLSearchParams({
           urutan: buttonId,
-          apple: isAppleEnabled ? "yes" : "no",
+          apel: isAppleEnabled ? "yes" : "no",
         });
         const url = `http://47.128.237.174/mandalorian/${selectedUrl}?${urlParams.toString()}`;
         console.log(`Membuka website untuk tombol ${buttonId}`);
@@ -105,7 +105,7 @@ value = { selectedUrl }
 checked = { isAppleEnabled }
 onChange = {(e) => setIsAppleEnabled(e.target.checked)}
         />
-        Aktifkan Apple
+        APEL?
   </label>
 {
   [...Array(8)].map((_, index) => (
