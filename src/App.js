@@ -25,9 +25,9 @@ function App() {
       } else {
         const urlParams = new URLSearchParams({
           urutan: buttonId,
-          apple: isAppleEnabled ? "yes" : "no", // Dynamically add the 'apple' param
+          apple: isAppleEnabled ? "yes" : "no",
         });
-        const url = `http://47.128.237.174/mandalorian/<span class="math-inline">\{selectedUrl\}?</span>{urlParams.toString()}`;
+        const url = `http://47.128.237.174/mandalorian/${selectedUrl}?${urlParams.toString()}`;
         console.log(`Membuka website untuk tombol ${buttonId}`);
         window.open(url, "_blank");
       }
@@ -89,22 +89,33 @@ function App() {
 
   return (
     <div>
-      <select
-        onChange={(e) => setSelectedUrl(e.target.value)}
-        value={selectedUrl}
-      >
-        <option value="luciurl.php">luciurl.php</option>
-        <option value="luciurl2.php">luciurl2.php</option>
-        <option value="luciurl3.php">luciurl3.php</option>
-      </select>
-      <br />
-      <label>
+    <select
+        onChange= {(e) => setSelectedUrl(e.target.value)
+}
+value = { selectedUrl }
+  >
+  <option value="luciurl.php" > luciurl.php </option>
+    < option value = "luciurl2.php" > luciurl2.php </option>
+      < option value = "luciurl3.php" > luciurl3.php </option>
+        </select>
+        < br />
+        <label>
         <input
           type="checkbox"
-          checked={isAppleEnabled}
-          onChange={(e) => setIsAppleEnabled(e.target.checked)}
+checked = { isAppleEnabled }
+onChange = {(e) => setIsAppleEnabled(e.target.checked)}
         />
         Aktifkan Apple
-      </label>
-      {[...Array(8)].map((_, index) => (
-        <button key={index} onClick
+  </label>
+{
+  [...Array(8)].map((_, index) => (
+    <button key= { index } onClick = {() => handleButtonClick(index + 1)}>
+      Tombol { index + 1 }
+</button>
+      ))}
+<p>Antrian: { queue.join(", ") } </p>
+  </div>
+  );
+}
+
+export default App;
