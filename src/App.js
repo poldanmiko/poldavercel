@@ -6,6 +6,10 @@ function App() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedUrl, setSelectedUrl] = useState("luciurl.php");
   const [isAppleEnabled, setIsAppleEnabled] = useState(false);
+  const [nomor, setNomor] = useState("1");
+  const [opsi, setOpsi] = useState("1");
+  const [email, setEmail] = useState("");
+  const [notification, setNotification] = useState("");
 
   const handleButtonClick = async (buttonId) => {
     if (queue.includes(buttonId)) {
@@ -87,34 +91,74 @@ function App() {
     return () => clearTimeout(timeoutId);
   }, [queue, isProcessing]);
 
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const urlParams = new URLSearchParams({
+        nomor,
+        opsi,
+        apel: email,
+      });
+      const url = `https://due-ibby-individual-65-cb3662a6.koyeb.app/apel.php?${urlParams.toString()}`;
+      const response = await fetch(url);
+      if (response.ok) {
+        setNotification("Data berhasil disimpan!");
+      } else {
+        setNotification("Gagal menyimpan data.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setNotification("Gagal menyimpan data.");
+    }
+  };
+
   return (
     <div>
-    <select
-        onChange= {(e) => setSelectedUrl(e.target.value)
-}
-value = { selectedUrl }
-  >
-  <option value="luciurl.php" > luciurl.php </option>
-    < option value = "luciurl2.php" > luciurl2.php </option>
-      < option value = "luciurl3.php" > luciurl3.php </option>
-        </select>
-        < br />
-        <label>
+      <select onChange={(e) => setSelectedUrl(e.target.value)} value={selectedUrl}>
+        <option value="luciurl.php">luciurl.php</option>
+        <option value="luciurl2.php">luciurl2.php</option>
+        <option value="luciurl3.php">luciurl3.php</option>
+      </select>
+      <br />
+      <label>
         <input
           type="checkbox"
-checked = { isAppleEnabled }
-onChange = {(e) => setIsAppleEnabled(e.target.checked)}
+          checked={isAppleEnabled}
+          onChange={(e) => setIsAppleEnabled(e.target.checked)}
         />
         APEL?
-  </label>
-{
-  [...Array(8)].map((_, index) => (
-    <button key= { index } onClick = {() => handleButtonClick(index + 1)}>
-      Tombol { index + 1 }
-</button>
+      </label>
+      {[...Array(8)].map((_, index) => (
+        <button key={index} onClick={() => handleButtonClick(index + 1)}>
+          Tombol {index + 1}
+        </button>
       ))}
-<p>Antrian: { queue.join(", ") } </p>
-  </div>
+      <p>Antrian: {queue.join(", ")}</p>
+
+      <form onSubmit={handleFormSubmit}>
+        <select onChange={(e) => setNomor(e.target.value)} value={nomor}>
+          <option value="1">Nomor 1</option>
+          <option value="2">Nomor 2</option>
+          <option value="3">Nomor 3</option>
+        </select>
+        <select onChange={(e) => setOpsi(e.target.value)} value={opsi}>
+          {[...Array(8)].map((_, index) => (
+            <option key={index} value={index + 1}>
+              Opsi {index + 1}
+            </option>
+          ))}
+        </select>
+        <input
+          type="email"
+          placeholder="Alamat Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <button type="submit">Submit</button>
+      </form>
+      {notification && <p>{notification}</p>}
+    </div>
   );
 }
 
