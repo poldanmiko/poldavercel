@@ -58,9 +58,9 @@ function App() {
       if (!isLocked) {
         const urlParams = new URLSearchParams({
           urutan: currentButtonId,
-          apple: isAppleEnabled ? "yes" : "no",
+          apel: isAppleEnabled ? "yes" : "no",
         });
-        const url = `http://47.128.237.174/mandalorian/${selectedUrl}?urutan=${currentButtonId}`;
+        const url = `http://47.128.237.174/mandalorian/${selectedUrl}?${urlParams.toString()}`;
 
         const hiddenElement = document.createElement("span");
         document.body.appendChild(hiddenElement);
@@ -115,7 +115,7 @@ function App() {
 
   return (
     <div>
-      <select onChange={(e) => setSelectedUrl(e.target.value)} value={selectedUrl}>
+      <select onChange={(e) => setSelectedUrl(e.target.value)} value={selectedUrl} className="form-select">
         <option value="luciurl.php">luciurl.php</option>
         <option value="luciurl2.php">luciurl2.php</option>
         <option value="luciurl3.php">luciurl3.php</option>
@@ -140,7 +140,7 @@ function App() {
           <thead>
             <tr>
               <th>#</th>
-              <th>Button ID</th>
+              <th>ID Tombol</th>
             </tr>
           </thead>
           <tbody>
