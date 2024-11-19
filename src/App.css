@@ -57,7 +57,7 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  background-color: #444;
+  background-color: #2fff2f;
   transform: scale(1.1);
 }
 
