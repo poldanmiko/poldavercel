@@ -108,7 +108,7 @@ label input[type="checkbox"] {
   padding: 10px;
   border-radius: 5px;
   margin-top: 20px;
-  animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.5s ease-in-out, fadeOut 0.5s ease-in-out 1s;
 }
 
 @keyframes fadeIn {
@@ -118,4 +118,36 @@ label input[type="checkbox"] {
   to {
     opacity: 1;
   }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.queue-container {
+  margin-top: 20px;
+}
+
+.queue-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.queue-table th, .queue-table td {
+  border: 1px solid #555;
+  padding: 10px;
+  text-align: center;
+}
+
+.queue-table th {
+  background-color: #333;
+}
+
+.queue-table td {
+  background-color: #222;
 }
