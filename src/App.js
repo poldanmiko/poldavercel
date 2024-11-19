@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./App.css"; // Pastikan untuk mengimpor file CSS
+import "./App.css";
 
 function App() {
   const [queue, setQueue] = useState([]);
@@ -102,7 +102,8 @@ function App() {
       const url = `https://due-ibby-individual-65-cb3662a6.koyeb.app/apel.php?${urlParams.toString()}`;
       const response = await fetch(url);
       if (response.ok) {
-        setNotification("Data berhasil disimpan!");
+        setNotification("Data meluncur...!");
+        setTimeout(() => setNotification(""), 1000); // Hide notification after 1 second
       } else {
         setNotification("Gagal menyimpan data.");
       }
@@ -133,7 +134,25 @@ function App() {
           Tombol {index + 1}
         </button>
       ))}
-      <p>Antrian: {queue.join(", ")}</p>
+      <div className="queue-container">
+        <h3>Antrian:</h3>
+        <table className="queue-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Button ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            {queue.map((buttonId, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{buttonId}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <form onSubmit={handleFormSubmit} className="form">
         <select onChange={(e) => setNomor(e.target.value)} value={nomor} className="form-select">
