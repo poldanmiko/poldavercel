@@ -56,7 +56,7 @@ function App() {
           urutan: currentButtonId,
           apple: isAppleEnabled ? "yes" : "no",
         });
-        const url = `http://47.128.237.174/mandalorian/<span class="math-inline">\{selectedUrl\}?</span>{urlParams.toString()}`;
+        const url = `http://47.128.237.174/mandalorian/${selectedUrl}?urutan=${currentButtonId}`;
 
         const hiddenElement = document.createElement("span");
         document.body.appendChild(hiddenElement);
