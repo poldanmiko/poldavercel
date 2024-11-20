@@ -10,6 +10,7 @@ function App() {
   const [opsi, setOpsi] = useState("1");
   const [email, setEmail] = useState("");
   const [notification, setNotification] = useState("");
+  const [showResult, setShowResult] = useState("");
 
   const handleButtonClick = async (buttonId) => {
     if (queue.includes(buttonId)) {
@@ -113,6 +114,24 @@ function App() {
     }
   };
 
+  const handleShowClick = async () => {
+    try {
+      const urlParams = new URLSearchParams({
+        nomor,
+        opsi,
+      });
+      const url = `https://due-ibby-individual-65-cb3662a6.koyeb.app/show_apel.php?${urlParams.toString()}`;
+      const response = await fetch(url);
+      const data = await response.text();
+      setShowResult(data);
+      setNotification("Hasil saat ini ditampilkan!");
+      setTimeout(() => setNotification(""), 1000); // Hide notification after 1 second
+    } catch (error) {
+      console.error("Error fetching current results:", error);
+      setNotification("Gagal menampilkan hasil.");
+    }
+  };
+
   return (
     <div>
       <select onChange={(e) => setSelectedUrl(e.target.value)} value={selectedUrl} className="form-select">
@@ -176,8 +195,10 @@ function App() {
           className="form-input"
         />
         <button type="submit" className="form-button">Gas</button>
+        <button type="button" className="form-button" onClick={handleShowClick}>Show</button>
       </form>
       {notification && <p className="notification">{notification}</p>}
+      {showResult && <p className="show-result">{showResult}</p>}
     </div>
   );
 }
