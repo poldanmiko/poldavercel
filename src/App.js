@@ -20,7 +20,7 @@ function App() {
 
     try {
       const response = await fetch(
-        "https://due-ibby-individual-65-cb3662a6.koyeb.app/lockfile.php?cek=yes"
+        "https://intimate-amalea-personallll-9540296f.koyeb.app/lockfile.php?cek=yes"
       );
       const data = await response.text();
       const isLocked = data === "1";
@@ -51,7 +51,7 @@ function App() {
       const currentButtonId = queue[0];
 
       const response = await fetch(
-        "https://due-ibby-individual-65-cb3662a6.koyeb.app/lockfile.php?cek=yes"
+        "https://intimate-amalea-personallll-9540296f.koyeb.app/lockfile.php?cek=yes"
       );
       const data = await response.text();
       const isLocked = data === "1";
@@ -100,7 +100,7 @@ function App() {
         opsi,
         apel: email,
       });
-      const url = `https://due-ibby-individual-65-cb3662a6.koyeb.app/apel.php?${urlParams.toString()}`;
+      const url = `https://intimate-amalea-personallll-9540296f.koyeb.app/apel.php?${urlParams.toString()}`;
       const response = await fetch(url);
       if (response.ok) {
         setNotification("Data meluncur...!");
@@ -120,7 +120,7 @@ function App() {
         pasukan: nomor,
         urutan: opsi,
       });
-      const url = `https://due-ibby-individual-65-cb3662a6.koyeb.app/show_apel.php?${urlParams.toString()}`;
+      const url = `https://intimate-amalea-personallll-9540296f.koyeb.app/show_apel.php?${urlParams.toString()}`;
       const response = await fetch(url);
       const data = await response.text();
       setShowResult(data);
@@ -133,9 +133,9 @@ function App() {
   return (
     <div>
       <select onChange={(e) => setSelectedUrl(e.target.value)} value={selectedUrl} className="form-select">
-        <option value="luciurl.php">luciurl.php</option>
-        <option value="luciurl2.php">luciurl2.php</option>
-        <option value="luciurl3.php">luciurl3.php</option>
+        <option value="luciurl4.php">luciurl.php</option>
+        <option value="luciurl5.php">luciurl2.php</option>
+        <option value="luciurl6.php">luciurl3.php</option>
       </select>
       <br />
       <label>
