@@ -168,7 +168,7 @@ function App() {
           ))}
         </select>
         <input
-          type="email"
+          type="text"
           placeholder="Tambah Email?"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
