@@ -124,8 +124,6 @@ function App() {
       const response = await fetch(url);
       const data = await response.text();
       setShowResult(data);
-      setNotification("Menampilkan......!");
-      setTimeout(() => setNotification(""), 1000); // Hide notification after 1 second
     } catch (error) {
       console.error("Error fetching current results:", error);
       setNotification("Gagal menampilkan hasil.");
