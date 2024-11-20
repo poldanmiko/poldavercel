@@ -117,14 +117,14 @@ function App() {
   const handleShowClick = async () => {
     try {
       const urlParams = new URLSearchParams({
-        nomor,
-        opsi,
+        pasukan,
+        urutan,
       });
       const url = `https://due-ibby-individual-65-cb3662a6.koyeb.app/show_apel.php?${urlParams.toString()}`;
       const response = await fetch(url);
       const data = await response.text();
       setShowResult(data);
-      setNotification("Hasil saat ini ditampilkan!");
+      setNotification("Menampilkan......!");
       setTimeout(() => setNotification(""), 1000); // Hide notification after 1 second
     } catch (error) {
       console.error("Error fetching current results:", error);
