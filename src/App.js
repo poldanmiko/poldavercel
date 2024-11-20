@@ -117,8 +117,8 @@ function App() {
   const handleShowClick = async () => {
     try {
       const urlParams = new URLSearchParams({
-        pasukan,
-        urutan,
+        pasukan: nomor,
+        urutan: opsi,
       });
       const url = `https://due-ibby-individual-65-cb3662a6.koyeb.app/show_apel.php?${urlParams.toString()}`;
       const response = await fetch(url);
