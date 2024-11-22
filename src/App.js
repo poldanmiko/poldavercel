@@ -130,6 +130,26 @@ function App() {
     }
   };
 
+  const resetClick = async () => {
+    try {
+      const url = `https://intimate-amalea-personallll-9540296f.koyeb.app/lockfile.php?reset=yes`;
+      const response = await fetch(url);
+      const data = await response.text();
+      setShowResult(data);
+    } catch (error) {
+      console.error("Error fetching current results:", error);
+      setNotification("Gagal menampilkan hasil.");
+    }
+  };
+
+  const closeNotification = () => {
+    setNotification("");
+  };
+
+  const closeShowResult = () => {
+    setShowResult("");
+  };
+
   return (
     <div>
       <select onChange={(e) => setSelectedUrl(e.target.value)} value={selectedUrl} className="form-select">
@@ -153,22 +173,13 @@ function App() {
       ))}
       <div className="queue-container">
         <h3>Antrian:</h3>
-        <table className="queue-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>ID Tombol</th>
-            </tr>
-          </thead>
-          <tbody>
-            {queue.map((buttonId, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{buttonId}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="queue-boxes">
+          {queue.map((buttonId, index) => (
+            <div key={index} className="queue-box">
+              {buttonId}
+            </div>
+          ))}
+        </div>
       </div>
 
       <form onSubmit={handleFormSubmit} className="form">
@@ -194,9 +205,20 @@ function App() {
         />
         <button type="submit" className="form-button">Gas</button>
         <button type="button" className="form-button" onClick={handleShowClick}>Show</button>
+        <button type="button" className="form-button" onClick={resetClick}>Reset</button>
       </form>
-      {notification && <p className="notification">{notification}</p>}
-      {showResult && <p className="show-result">{showResult}</p>}
+      {notification && (
+        <div className="notification">
+          <span>{notification}</span>
+          <button className="close-button" onClick={closeNotification}>[X]</button>
+        </div>
+      )}
+      {showResult && (
+        <div className="show-result">
+          <span>{showResult}</span>
+          <button className="close-button" onClick={closeShowResult}>[X]</button>
+        </div>
+      )}
     </div>
   );
 }
